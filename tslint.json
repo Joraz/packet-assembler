@@ -1,6 +1,16 @@
 {
   "extends": "tslint:recommended",
   "rules": {
-    "one-line": false
+    "one-line": false,
+    "array-type": {
+      "options": "generic"
+    },
+    "quotemark": {
+      "options": "single"
+    },
+    "max-line-length": false,
+    "no-console": {
+      "severity": "warn"
+    }
   }
 }

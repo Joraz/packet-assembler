@@ -1,3 +1,4 @@
+import { Dictionary } from 'typescript-dotnet-umd/System/Collections/Dictionaries/Dictionary';
 
 import { Packet } from './objects/packet';
 import { PacketList } from './objects/packetList';
@@ -71,7 +72,7 @@ const input = `
 
 const packetLines = input.split('\n');
 
-const packetMap: { [messageId: number]: PacketList } = {};
+const packetMap: Dictionary<number, PacketList> = new Dictionary();
 
 packetLines.forEach((line) =>
 {
@@ -84,20 +85,26 @@ packetLines.forEach((line) =>
 
     const messageId = packet.messageId;
 
-    let packetMapEntry = packetMap[messageId];
+    let packetList = packetMap.getValue(messageId);
 
-    if (!packetMapEntry)
+    if (!packetList)
     {
-        packetMap[messageId] = new PacketList(packet);
-        packetMapEntry = packetMap[messageId];
-    } else
+        packetMap.add({
+            key: messageId,
+            value: new PacketList(packet),
+        });
+    }
+    else
     {
-        packetMapEntry.addPacket(packet);
+        packetList.addPacket(packet);
     }
 
-    if (packetMapEntry.isComplete())
+    // At this point, we can be sure that the entry will exist
+    packetList = packetMap.getAssuredValue(messageId);
+
+    if (packetList.isComplete())
     {
-        const packetMessage = packetMapEntry.getCompletePacket();
+        const packetMessage = packetList.getMessage();
 
         console.log(packetMessage);
     }

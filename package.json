@@ -6,12 +6,29 @@
   "scripts": {
     "compile": "node_modules/.bin/tsc -p tsconfig.json",
     "start": "npm run compile && node ./dist/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "author": "Dan Young",
   "license": "ISC",
+  "dependencies": {
+    "typescript-dotnet-umd": "~4.9.9"
+  },
   "devDependencies": {
-    "typescript": "^2.5.3",
-    "tslint": "~5.8.0"
+    "@types/jest": "~21.1.7",
+    "jest": "~21.2.1",
+    "tslint": "~5.8.0",
+    "typescript": "^2.5.3"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "ts", "js"
+    ],
+    "transform": {
+      "^.+\\.(ts)$": "<rootDir>/preprocessor.js"
+    },
+    "testMatch": [
+      "**/test/**/*.(ts)"
+    ],
+    "verbose": true
   }
 }
